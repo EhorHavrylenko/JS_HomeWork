@@ -34,7 +34,7 @@ function clickInImage(event){
     event.preventDefault()
 
     if(event.target.nodeName === 'IMG'){
-        openModalRef.classList.add('is-open')
+        openModalRef.classList.add('is-open');
         (function openModalImage(){
             modalImage.src = event.target.dataset.source;
         }())
@@ -42,11 +42,9 @@ function clickInImage(event){
 }
 
 const closerModalBtn = document.querySelector('button[data-action="close-lightbox"]').addEventListener('click', closeModalWindow);
-const lightboxOverlay = document.querySelector('.lightbox__overlay')
 
 function closeModalWindow(){
     openModalRef.classList.remove('is-open');
+    modalImage.src = '';
 };
-
-
 
