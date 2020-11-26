@@ -14,13 +14,14 @@ const createGalleryElement = image => {
     img.src = image.preview;
     img.setAttribute('data-source', image.original);
 
+ 
     a.appendChild(img)
     li.appendChild(a)
 
     return li;
 }
 
-const imageGallery = images.map(image => createGalleryElement(image))
+const imageGallery = images.map((image, id) => createGalleryElement(image))
 
 const galleryEl = document.querySelector('.js-gallery')
 galleryEl.append(...imageGallery)
@@ -30,21 +31,43 @@ const modalImage = document.querySelector('.lightbox__image')
 
 galleryEl.addEventListener('click', clickInImage);
 
+const closerModalBtn = document.querySelector('button[data-action="close-lightbox"]');
+closerModalBtn.addEventListener('click', closeModalWindow);
+
+
+const overlayEl = document.querySelector('.lightbox__overlay');
+overlayEl.addEventListener('click', closeOverlay);
+
 function clickInImage(event){
     event.preventDefault()
 
-    if(event.target.nodeName === 'IMG'){
-        openModalRef.classList.add('is-open');
-        (function openModalImage(){
-            modalImage.src = event.target.dataset.source;
-        }())
+    const { dataset, nodeName } = event.target;
+
+    if(nodeName === 'IMG'){
+        openModalRef.classList.add('is-open')
+        const {source, id} = dataset;
+        openModalImage(source)
     }
 }
 
-const closerModalBtn = document.querySelector('button[data-action="close-lightbox"]').addEventListener('click', closeModalWindow);
+function openModalImage(sourse){
+    modalImage.src = sourse;
+}
 
 function closeModalWindow(){
-    openModalRef.classList.remove('is-open');
-    modalImage.src = '';
+    closeModal();
 };
 
+function closeOverlay(){
+    closeModal(); // закрытие модального окна по клику на овэрлэй
+}
+
+window.addEventListener("keydown", closeEsc);
+
+function closeEsc(){
+    closeModal(); // закрытие модалього окна по нажатию на клавишу ESC
+}
+
+function closeModal(){
+    openModalRef.classList.remove('is-open');
+}
