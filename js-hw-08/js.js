@@ -70,4 +70,5 @@ function closeEsc(){
 
 function closeModal(){
     openModalRef.classList.remove('is-open');
+    modalImage.src = '';
 }
